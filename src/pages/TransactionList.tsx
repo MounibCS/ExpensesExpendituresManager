@@ -115,81 +115,115 @@ export default function TransactionList() {
     };
 
     return (
-      <form onSubmit={handleSubmit} className="space-y-4 w-full flex flex-col justify-center items-center p-4 px-8">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Name</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            required
-          />
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
+        {/* Form Header */}
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold text-gray-800">Edit Transaction</h3>
+          <p className="text-gray-500 mt-1">Update your transaction details below</p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Amount</label>
-          <input
-            type="number"
-            step="0.01"
-            value={formData.amount}
-            onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            required
-          />
+        {/* Form Fields */}
+        <div className="space-y-6">
+          <div className="form-group">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Transaction Name</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 ease-in-out text-gray-700"
+              required
+              placeholder="Enter transaction name"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="form-group">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Amount</label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">DZD</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.amount}
+                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                  className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 ease-in-out text-gray-700"
+                  required
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Date</label>
+              <input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 ease-in-out text-gray-700"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="form-group">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value as TransactionCategory })}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 ease-in-out text-gray-700 bg-white"
+              >
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
+              <select
+                value={formData.type}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value as TransactionType })}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 ease-in-out text-gray-700 bg-white"
+              >
+                <option value="expense" className="text-red-600">Expense</option>
+                <option value="income" className="text-green-600">Income</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Notes</label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 ease-in-out text-gray-700 min-h-[100px]"
+              placeholder="Add any additional notes here..."
+            />
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Date</label>
-          <input
-            type="date"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Category</label>
-          <select
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value as TransactionCategory })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        {/* Form Footer */}
+        <DrawerFooter className="flex justify-end space-x-4 pt-6 mt-8 border-t border-gray-100">
+        <DrawerClose asChild>
+          <Button 
+            type="submit" 
+            variant="default"
+            className="px-6 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-200"
           >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Type</label>
-          <select
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value as TransactionType })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          >
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Notes</label>
-          <textarea
-            value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-        </div>
-
-        <DrawerFooter>
-          <DrawerClose>
-            <Button type="submit" variant={'default'}>Submit</Button>
-            <Button type="button" variant={'secondary'}>Cancel</Button>
+            Save Changes
+          </Button>
+        </DrawerClose>
+          <DrawerClose asChild>
+            <Button 
+              type="button" 
+              variant="secondary"
+              className="px-6 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+            >
+              Cancel
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </form>
@@ -197,7 +231,7 @@ export default function TransactionList() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 my-4">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Transactions</h1>
         <div className="flex items-center space-x-4">
@@ -291,11 +325,11 @@ export default function TransactionList() {
                         <DrawerTrigger>
                           <Pen className="h-5 w-5" />
                         </DrawerTrigger>
-                        <DrawerContent className='bg-white'>
-                          <DrawerHeader>
+                        <DrawerContent className=' border-0'>
+                          {/* <DrawerHeader>
                             <DrawerTitle>Edit Transaction</DrawerTitle>
                             <DrawerDescription>Fill this form to edit this transaction.</DrawerDescription>
-                          </DrawerHeader>
+                          </DrawerHeader> */}
                           <EditTransactionForm 
                             transaction={transaction} 
                             onClose={() => document.querySelector<HTMLButtonElement>('.drawer-close')?.click()}
